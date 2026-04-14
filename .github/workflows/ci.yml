@@ -26,9 +26,9 @@ jobs:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/module11
       TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/module11
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -44,14 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Run Trivy filesystem scan
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/repo" \
-            aquasec/trivy:latest \
-            fs --severity HIGH,CRITICAL --exit-code 0 /repo
+            aquasecurity/trivy:latest \
+            fs --severity HIGH,CRITICAL --exit-code 0 --skip-dirs /repo/.venv --skip-dirs /repo/.pytest_cache /repo
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -60,17 +60,17 @@ jobs:
     env:
       DOCKERHUB_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/module11
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
