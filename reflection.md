@@ -1,13 +1,9 @@
 # Reflection
 
-## Key Experiences
+This module helped me strengthen both my database design skills and my understanding of Pydantic validation. Creating the `Calculation` model made me think more carefully about how data should be stored, especially when deciding to persist the result instead of calculating it only at read time. Building the Pydantic schemas also showed me how validation can protect the application early by enforcing correct operation types and preventing invalid cases like division by zero before data reaches the database.
 
-- Building the calculation feature was a good exercise in separating domain logic from persistence.
-- The factory pattern made the arithmetic behavior easy to extend without changing the data model.
-- Validating division by zero at the schema layer reduced the chance of bad data reaching the database.
+The testing and deployment work was just as valuable. Even though no routes exist yet, writing unit tests for the schemas and factory, plus integration tests against a PostgreSQL-backed setup, showed me how important it is to verify the data layer independently. The Docker-based CI workflow reinforced how automated testing can catch issues before deployment, and the scan step reminded me that security checks should be part of the development process from the beginning, not added later.
 
-## Challenges
+I was able to connect this module to my prior experience with a basic Python calculator. In that earlier project, the logic was simple and direct. Here, I used the same arithmetic ideas but organized them with polymorphism and a factory pattern so each operation could be handled in a cleaner, more extensible way. That made the code easier to maintain and prepared it for future expansion in Module 12.
 
-- Keeping the model, schema, and tests aligned took a little extra care because the assignment focuses on validation rather than endpoints.
-- Designing the CI workflow to support PostgreSQL while still working locally required a flexible test setup.
-- Since Module 12 will add routes, I kept the application intentionally small and focused on the data layer.
+Some of the main hurdles were deciding whether to reference a user, structuring the factory, and setting up the test environment so it worked both locally and in GitHub Actions. I overcame these by keeping the model focused, using an enum for the calculation type, and creating a flexible test fixture that could work with SQLite locally or PostgreSQL in CI. Overall, this activity helped me see how modeling, validation, testing, and deployment all support each other in a real application.
